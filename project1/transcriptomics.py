@@ -159,3 +159,86 @@ sns_plot.ax_heatmap.set_yticklabels(sns_plot.ax_heatmap.get_ymajorticklabels(), 
 sns_plot.savefig("output/heatmap.pdf")
 
 plt.show()
+
+
+
+
+
+
+## expression bar plot
+
+gene_to_plot = "LIM2"
+
+control_expression = data[genes==gene_to_plot, labels == "control"]
+ipf_expression = data[genes==gene_to_plot, labels == "ipf"]
+
+control_mean = np.mean(control_expression)
+control_sem = np.std(control_expression) / np.sqrt(len(control_expression))
+ipf_mean = np.mean(ipf_expression)
+ipf_sem = np.std(ipf_expression) / np.sqrt(len(ipf_expression))
+
+conditions = ['Control', 'IPF']
+means = [control_mean, ipf_mean]
+errors = [control_sem, ipf_sem]
+
+plt.bar(conditions, means, yerr=errors, capsize=5, color=['blue', 'red'])
+plt.ylabel('Expression Level')
+plt.title(f'{gene_to_plot} Expression')
+# plt.savefig(f"output/{gene_to_plot}_expression_bar.pdf")
+plt.show()
+
+
+
+# expression scatter plot
+
+gene_to_plot = "LIM2"
+
+control_expression = data[genes == gene_to_plot, labels == "control"]
+ipf_expression = data[genes == gene_to_plot, labels == "ipf"]
+
+control_mean = np.mean(control_expression)
+control_sem = np.std(control_expression) / np.sqrt(len(control_expression))
+ipf_mean = np.mean(ipf_expression)
+ipf_sem = np.std(ipf_expression) / np.sqrt(len(ipf_expression))
+
+def add_jitter(values, jitter_amount=0.05):
+    return values + np.random.uniform(-jitter_amount, jitter_amount, size=values.shape)
+
+control_x = add_jitter(np.ones_like(control_expression) * 1)
+ipf_x = add_jitter(np.ones_like(ipf_expression) * 2)
+
+plt.scatter(control_x, control_expression, color='blue', label='Control', s=10)  # smaller dots with s=10
+plt.scatter(ipf_x, ipf_expression, color='red', label='IPF', s=10)  # smaller dots with s=10
+
+plt.errorbar(1, control_mean, yerr=control_sem, fmt='o', color='blue', capsize=5)
+plt.errorbar(2, ipf_mean, yerr=ipf_sem, fmt='o', color='red', capsize=5)
+
+plt.xticks([1, 2], ['Control', 'IPF'])
+
+plt.ylabel('Expression Level')
+plt.title(f'{gene_to_plot} Expression')
+plt.legend()
+
+# plt.savefig(f"output/{gene_to_plot}_expression_scatter.pdf")
+plt.show()
+
+
+
+
+# DEG expression correlation
+
+correlation_matrix = np.corrcoef(sig_data)
+
+sns_plot = sns.clustermap(correlation_matrix, 
+                          xticklabels=sig_genes, 
+                          yticklabels=sig_genes, 
+                          cmap="coolwarm", 
+                          annot=False, 
+                          linewidths=.5, 
+                          figsize=(12, 10))
+
+sns_plot.ax_heatmap.set_xticklabels(sns_plot.ax_heatmap.get_xmajorticklabels(), fontsize=2)
+sns_plot.ax_heatmap.set_yticklabels(sns_plot.ax_heatmap.get_ymajorticklabels(), fontsize=2)
+
+# sns_plot.savefig("output/degs_correlation_heatmap.pdf")
+plt.show()
