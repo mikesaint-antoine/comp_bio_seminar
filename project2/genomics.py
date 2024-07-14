@@ -129,13 +129,10 @@ neg_log_p_values = -np.log10(p_values)
 
 
 
-# Create a DataFrame-like structure using NumPy
 snp_data = np.column_stack((filtered_snp_chromosomes, filtered_snp_positions, neg_log_p_values))
 
-# Sort the data by chromosome and position
 snp_data = snp_data[np.lexsort((snp_data[:, 1], snp_data[:, 0]))]
 
-# Compute cumulative positions
 cumulative_positions = np.zeros_like(filtered_snp_positions)
 chromosome_offsets = {}
 midpoints = []
@@ -148,13 +145,10 @@ for chromosome in np.unique(filtered_snp_chromosomes):
     midpoints.append((current_offset + np.max(cumulative_positions[chrom_mask])) / 2)
     current_offset += np.max(filtered_snp_positions[chrom_mask]) + 1  # Add a buffer between chromosomes
 
-# Prepare the Manhattan plot
 plt.figure(figsize=(12, 6))
 
-# Define colors for different chromosomes
 colors = ['#1f77b4', '#ff7f0e']
 
-# Plot each chromosome with alternating colors and smaller dots
 dot_size = 10  # Adjust this value to change the size of the dots
 current_chromosome = 1
 for chromosome in np.unique(snp_data[:, 0]):
@@ -162,14 +156,10 @@ for chromosome in np.unique(snp_data[:, 0]):
     plt.scatter(cumulative_positions[chrom_mask], snp_data[chrom_mask, 2], c=colors[current_chromosome % 2], s=dot_size, label=f'Chromosome {chromosome}')
     current_chromosome += 1
 
-# Add chromosome labels at midpoints
 plt.xticks(midpoints, np.unique(filtered_snp_chromosomes))
 
-# Add labels and title
 plt.xlabel('Chromosome')
 plt.ylabel('-log10(p-value)')
 plt.title('Manhattan Plot of GWAS Results')
-# plt.legend()
 
-# Show the plot
 plt.show()
