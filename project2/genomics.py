@@ -92,6 +92,7 @@ for i in range(filtered_data.shape[0]):
         
         # adding 1 to every element to deal with zero-column problem
         contingency_table = contingency_table + 1
+        chi2, p_value, _, _ = chi2_contingency(contingency_table)
 
     p_values.append(p_value)
 
