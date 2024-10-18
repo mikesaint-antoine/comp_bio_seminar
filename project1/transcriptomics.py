@@ -48,7 +48,7 @@ labels = labels[labels != "chp"]
 for j in range(data.shape[1]):
     column_sum = sum(data[:,j])
     
-    data[:,j] = data[:,j] / column_sum
+    data[:,j] = data[:,j] / column_sum * 1000000
 
 
 
@@ -57,7 +57,7 @@ for j in range(data.shape[1]):
 p_values = []
 log2_FCs = []
 
-epsilon = 1e-8  # small constant to avoid division by zero
+epsilon = 1  # small constant to avoid division by zero
 
 for i in range(data.shape[0]):
     
@@ -138,7 +138,7 @@ sig_data_log2fc = np.zeros_like(sig_data)
 
 
 
-epsilon = 1e-8  # small constant to avoid division by zero
+epsilon = 1  # small constant to avoid division by zero
 
 
 for i in range(len(sig_genes)):
