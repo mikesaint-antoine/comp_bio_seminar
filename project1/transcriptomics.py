@@ -65,7 +65,7 @@ for i in range(data.shape[0]):
     ipf = data[i, labels == "ipf"]
 
     # perform t-test
-    t_statistic, p_value = ttest_ind(control, ipf, equal_var=False)
+    t_statistic, p_value = ttest_ind(np.log2(control + epsilon), np.log2(ipf + epsilon), equal_var=False)
     
     ## if you'd rather do the KS test, just use this line instead
     # ks_statistic, p_value = ks_2samp(control, ipf)
