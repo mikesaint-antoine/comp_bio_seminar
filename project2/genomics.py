@@ -159,6 +159,16 @@ for chromosome in np.unique(snp_data[:, 0]):
 
 plt.xticks(midpoints, np.unique(filtered_snp_chromosomes))
 
+
+sig_thresh = -np.log10(0.05/filtered_data.shape[0])
+plt.axhline(y=sig_thresh,
+            color='grey',
+            linestyle='--',
+            linewidth=1,
+            alpha=0.4)
+
+
+
 plt.xlabel('Chromosome')
 plt.ylabel('-log10(p-value)')
 plt.title('Manhattan Plot of GWAS Results')
