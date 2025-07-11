@@ -44,11 +44,21 @@ samples = samples[labels != "chp"]
 labels = labels[labels != "chp"]
 
 
-
+# counts-per-million (CPM) normalization
 for j in range(data.shape[1]):
     column_sum = sum(data[:,j])
     
     data[:,j] = data[:,j] / column_sum * 1000000
+
+
+# filtering out low expression genes
+mean_CPM_control = data[:,labels == "control"].mean(axis=1)
+mean_CPM_ipf = data[:,labels == "ipf"].mean(axis=1)
+
+to_keep = (mean_CPM_control >= 5) | (mean_CPM_control >= 5)
+
+data = data[to_keep,:]
+genes = genes[to_keep]
 
 
 
@@ -64,11 +74,8 @@ for i in range(data.shape[0]):
     control = data[i, labels == "control"]
     ipf = data[i, labels == "ipf"]
 
-    # perform t-test
-    t_statistic, p_value = ttest_ind(np.log2(control + epsilon), np.log2(ipf + epsilon), equal_var=False)
-    
-    ## if you'd rather do the KS test, just use this line instead
-    # ks_statistic, p_value = ks_2samp(control, ipf)
+    # perform ks-test
+    ks_statistic, p_value = ks_2samp(control, ipf)
 
     # save p_value for this gene
     p_values.append(p_value)
@@ -167,7 +174,7 @@ plt.show()
 
 ## expression bar plot
 
-gene_to_plot = "LIM2"
+gene_to_plot = "POSTN"
 
 control_expression = data[genes==gene_to_plot, labels == "control"]
 ipf_expression = data[genes==gene_to_plot, labels == "ipf"]
@@ -191,7 +198,7 @@ plt.show()
 
 # expression scatter plot
 
-gene_to_plot = "LIM2"
+gene_to_plot = "POSTN"
 
 control_expression = data[genes == gene_to_plot, labels == "control"]
 ipf_expression = data[genes == gene_to_plot, labels == "ipf"]
