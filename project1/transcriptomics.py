@@ -5,6 +5,11 @@ import matplotlib.pyplot as plt
 from scipy.stats import ttest_ind, ks_2samp
 import seaborn as sns
 
+# data link: https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE150910
+# paper link: https://pmc.ncbi.nlm.nih.gov/articles/PMC7667907/
+
+
+
 
 genes = []
 data = []
