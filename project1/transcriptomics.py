@@ -67,7 +67,7 @@ genes = genes[to_keep]
 
 
 
-# t-test attempt, now for every gene
+# getting p-value and log2FC, now for every gene
 
 p_values = []
 log2_FCs = []
