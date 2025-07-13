@@ -60,7 +60,7 @@ for j in range(data.shape[1]):
 mean_CPM_control = data[:,labels == "control"].mean(axis=1)
 mean_CPM_ipf = data[:,labels == "ipf"].mean(axis=1)
 
-to_keep = (mean_CPM_control >= 5) | (mean_CPM_control >= 5)
+to_keep = (mean_CPM_ipf >= 5) | (mean_CPM_control >= 5)
 
 data = data[to_keep,:]
 genes = genes[to_keep]
